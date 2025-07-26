@@ -2,8 +2,6 @@ package com.scraping.bibliotecadigital.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "LIVRO")
+@Table(name = "TB_LIVRO")
 public class Livro implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -33,11 +31,11 @@ public class Livro implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "AUTOR_ID")
-	private List<Autor> autores = new ArrayList<Autor>();
+	private Autor autor;
 	
 	@ManyToOne
 	@JoinColumn(name = "CATEGORIA_ID")
-	private List<Categoria> categorias = new ArrayList<Categoria>();
+	private Categoria categoria;
 	
 	public Livro() {
 		
@@ -85,10 +83,6 @@ public class Livro implements Serializable {
 		this.id = id;
 	}
 
-	public List<Categoria> getCategorias() {
-		return categorias;
-	}
-
 	public String getTitulo() {
 		return titulo;
 	}
@@ -121,8 +115,20 @@ public class Livro implements Serializable {
 		this.preco = preco;
 	}
 
-	public List<Autor> getAutores() {
-		return autores;
+	public Autor getAutor() {
+		return autor;
+	}
+
+	public void setAutor(Autor autor) {
+		this.autor = autor;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 }

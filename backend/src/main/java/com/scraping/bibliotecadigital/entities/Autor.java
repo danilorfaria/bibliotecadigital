@@ -22,9 +22,9 @@ public class Autor implements Serializable {
 	
 	private String nome;
 
+	@Column(unique = true)
 	private String email;
 	
-	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private LocalDate dataNascimento;
 	
 	public Autor() {
