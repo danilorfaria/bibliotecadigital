@@ -3,6 +3,8 @@ package com.scraping.bibliotecadigital.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.scraping.bibliotecadigital.entities.Autor;
+
 public class AutorDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -25,6 +27,14 @@ public class AutorDTO implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.dataNascimento = dataNascimento;
+	}
+	
+	public AutorDTO(Autor autor) {
+		super();
+		this.id = autor.getId();
+		this.nome = autor.getNome();
+		this.email = autor.getEmail();
+		this.dataNascimento = autor.getDataNascimento();
 	}
 
 	public Long getId() {

@@ -26,7 +26,7 @@ public class CategoriaDTO implements Serializable {
 	}
 	
 	public CategoriaDTO(Categoria category) {
-		
+		super();
 		this.id = category.getId();
 		this.nome = category.getNome();
 		this.descricao = category.getDescricao();

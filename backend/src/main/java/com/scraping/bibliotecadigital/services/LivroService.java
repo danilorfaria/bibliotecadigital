@@ -1,12 +1,10 @@
 package com.scraping.bibliotecadigital.services;
 
-import java.net.URL;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,79 +13,79 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.devsuperior.dscatalog.Services.exceptions.DataBaseException;
-import com.devsuperior.dscatalog.Services.exceptions.ResourceNotFoundException;
-import com.devsuperior.dscatalog.dto.CategoryDTO;
-import com.devsuperior.dscatalog.dto.ProductDTO;
-import com.devsuperior.dscatalog.dto.UriDTO;
-import com.devsuperior.dscatalog.entities.Category;
-import com.devsuperior.dscatalog.entities.Product;
-import com.devsuperior.dscatalog.repositories.CategoryRepository;
-import com.devsuperior.dscatalog.repositories.ProductRepository;
+import com.scraping.bibliotecadigital.dto.CategoriaDTO;
+import com.scraping.bibliotecadigital.dto.LivroDTO;
+import com.scraping.bibliotecadigital.entities.Autor;
+import com.scraping.bibliotecadigital.entities.Categoria;
+import com.scraping.bibliotecadigital.entities.Livro;
+import com.scraping.bibliotecadigital.repositories.CategoriaRepository;
+import com.scraping.bibliotecadigital.repositories.LivroRepository;
+import com.scraping.bibliotecadigital.services.exceptions.DataBaseException;
+import com.scraping.bibliotecadigital.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Service
 public class LivroService {
 
 	@Autowired
-	private ProductRepository repository;
+	private LivroRepository repository;
 	
-	@Autowired
-	private CategoryRepository categoryRepository;
-	
-	@Autowired
-	private S3Service s3Service;
+//	@Autowired
+//	private CategoriaRepository categoriaRepository;
 	
 	@Transactional(readOnly = true)
-	public List<ProductDTO> findAll() {
+	public List<LivroDTO> findAll() {
 		
-		List<Product> list = repository.findAll();
-		return list.stream().map(x -> new ProductDTO(x)).collect(Collectors.toList());
+		List<Livro> list = repository.findAll();
+		return list.stream().map(x -> new LivroDTO(x)).collect(Collectors.toList());
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<ProductDTO> findAllPaged(Long categoryId, String name, PageRequest pageRequest) {
+	public Page<LivroDTO> findAllPaged(Long categoriaId, String name, PageRequest pageRequest) {
 		
-		List<Category> categories = categoryId == 0 ? null : Arrays.asList(categoryRepository.getOne(categoryId));
+//		Page<Livro> page = repository.find(categoria, name, pageRequest);
+//		
+//		repository.findProductsWithCategories(page.getContent());
+//		
+//		return page.map(x -> new LivroDTO(x, x.getCategoria));
 		
-		Page<Product> page = repository.find(categories, name, pageRequest);
-		
-		repository.findProductsWithCategories(page.getContent());
-		
-		return page.map(x -> new ProductDTO(x, x.getCategories()));
+		return null;
 	}
 
 	@Transactional(readOnly = true)
-	public ProductDTO findById(Long id) {
+	public LivroDTO findById(Long id) {
 		
-		Optional<Product> obj = repository.findById(id);
-		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+		Optional<Livro> obj = repository.findById(id);
+		Livro entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		
-		return new ProductDTO(entity, entity.getCategories());
+		return new LivroDTO(entity);
 	}
 
 	@Transactional
-	public ProductDTO insert(ProductDTO dto) {
+	public LivroDTO insert(LivroDTO dto) {
 		
-		Product entity = new Product();
+		Livro entity = new Livro();
 		
 		copyDtoToEntity(dto, entity);
 		entity = repository.save(entity);
 		
-		return new ProductDTO(entity);
+		return new LivroDTO(entity);
 	}
 
 	@Transactional
-	public ProductDTO update(Long id, ProductDTO dto) {
+	public LivroDTO update(Long id, LivroDTO dto) {
 		
 		try {
-			Product entity = repository.getOne(id);
+			Livro entity = repository.getReferenceById(id);
 			copyDtoToEntity(dto, entity);
 			
 			entity = repository.save(entity);
 			
-			return new ProductDTO(entity);
+			return new LivroDTO(entity);
 			
 		} catch (EntityNotFoundException e) {
 			
@@ -110,28 +108,29 @@ public class LivroService {
 		}
 	}
 	
-	private void copyDtoToEntity(ProductDTO dto, Product entity) {
+	private void copyDtoToEntity(LivroDTO dto, Livro entity) {
 		
-		entity.setName(dto.getName());
-		entity.setDescription(dto.getDescription());
-		entity.setDate(dto.getDate());
-		entity.setImgUrl(dto.getImgUrl());
-		entity.setPrice(dto.getPrice());
+		entity.setTitulo(dto.getTitulo());
+		entity.setIsbn(dto.getIsbn());
+		entity.setAnoPublicacao(dto.getAnoPublicacao());
+		entity.setPreco(dto.getPreco());
+		entity.setAutor(dto.getAutorDTO());
+		entity.setCategoria(dto.getCategoriaDTO());
 		
-		entity.getCategories().clear();
-		
-		for (CategoryDTO catDto : dto.getCategories()) {
-			
-			Category category = categoryRepository.getOne(catDto.getId());
-			entity.getCategories().add(category);
-		}
+//		entity.getCategories().clear();
+//		
+//		for (CategoriaDTO catDto : dto.getCategoriaDTO()) {
+//			
+//			Categoria categoria = categoriaRepository.getOne(catDto.getId());
+//			entity.getCategoria().add(categoria);
+//		}
 	}
 
-	public UriDTO uploadFile(MultipartFile file) {
-		
-		URL url = s3Service.uploadFile(file);
-		
-		return new UriDTO(url.toString());
-	}
+//	public UriDTO uploadFile(MultipartFile file) {
+//		
+//		URL url = s3Service.uploadFile(file);
+//		
+//		return new UriDTO(url.toString());
+//	}
 
 }

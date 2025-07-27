@@ -3,6 +3,8 @@ package com.scraping.bibliotecadigital.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.scraping.bibliotecadigital.entities.Livro;
+
 public class LivroDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -35,6 +37,17 @@ public class LivroDTO implements Serializable {
 		this.preco = preco;
 		this.autorDTO = autorDTO;
 		this.categoriaDTO = categoriaDTO;
+	}
+	
+	public LivroDTO(Livro entity) {
+		super();
+		this.id = entity.getId();
+		this.titulo = entity.getTitulo();
+		this.isbn = entity.getIsbn();
+		this.anoPublicacao = entity.getAnoPublicacao();
+		this.preco = entity.getPreco();
+		this.autorDTO = new AutorDTO(entity.getAutor());
+		this.categoriaDTO = new CategoriaDTO(entity.getCategoria());
 	}
 	
 	public Long getId() {
