@@ -1,0 +1,97 @@
+package com.scraping.bibliotecadigital.dto;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+public class LivroDTO implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
+	
+	private String titulo;
+
+	private String isbn;
+	
+	private Integer anoPublicacao;
+	
+	private BigDecimal preco;
+	
+	private AutorDTO autorDTO;
+	
+	private CategoriaDTO categoriaDTO;
+	
+	public LivroDTO() {
+		
+	}
+
+	public LivroDTO(Long id, String titulo, String isbn, Integer anoPublicacao, BigDecimal preco, AutorDTO autorDTO,
+			CategoriaDTO categoriaDTO) {
+		super();
+		this.id = id;
+		this.titulo = titulo;
+		this.isbn = isbn;
+		this.anoPublicacao = anoPublicacao;
+		this.preco = preco;
+		this.autorDTO = autorDTO;
+		this.categoriaDTO = categoriaDTO;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getIsbn() {
+		return isbn;
+	}
+
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
+
+	public Integer getAnoPublicacao() {
+		return anoPublicacao;
+	}
+
+	public void setAnoPublicacao(Integer anoPublicacao) {
+		this.anoPublicacao = anoPublicacao;
+	}
+
+	public BigDecimal getPreco() {
+		return preco;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+
+	public AutorDTO getAutorDTO() {
+		return autorDTO;
+	}
+
+	public void setAutorDTO(AutorDTO autorDTO) {
+		this.autorDTO = autorDTO;
+	}
+
+	public CategoriaDTO getCategoriaDTO() {
+		return categoriaDTO;
+	}
+
+	public void setCategoriaDTO(CategoriaDTO categoriaDTO) {
+		this.categoriaDTO = categoriaDTO;
+	}
+
+
+}

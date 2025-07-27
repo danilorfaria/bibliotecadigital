@@ -41,15 +41,18 @@ public class Livro implements Serializable {
 		
 	}
 
-	public Livro(Long id, String titulo, String isbn, Integer anoPublicacao, BigDecimal preco) {
+	public Livro(Long id, String titulo, String isbn, Integer anoPublicacao, BigDecimal preco, Autor autor,
+			Categoria categoria) {
 		super();
 		this.id = id;
 		this.titulo = titulo;
 		this.isbn = isbn;
 		this.anoPublicacao = anoPublicacao;
 		this.preco = preco;
+		this.autor = autor;
+		this.categoria = categoria;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
