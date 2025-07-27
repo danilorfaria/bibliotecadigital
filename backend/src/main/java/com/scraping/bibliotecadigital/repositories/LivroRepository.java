@@ -17,7 +17,7 @@ public interface LivroRepository extends JpaRepository<Livro, Long> {
 	@Query("SELECT obj FROM Livro obj WHERE obj.categoria.id = :categoria ")
 	List<Livro> findLivroWithCategoria(Long categoria);
 
-	@Query("SELECT obj FROM Livro obj WHERE obj.categoria.id = :categoria AND obj obj.anoPublicacao = :ano AND obj.autor.id = :autor")
+	@Query("SELECT obj FROM Livro obj WHERE obj.categoria.id = :categoria AND obj.anoPublicacao = :ano AND obj.autor.id = :autor")
 	List<Livro> findAllLivroWithCategoriaAnoAutor(Long categoria, Integer ano, Long autor);
 	
 	@Query("SELECT obj FROM Livro obj WHERE "
