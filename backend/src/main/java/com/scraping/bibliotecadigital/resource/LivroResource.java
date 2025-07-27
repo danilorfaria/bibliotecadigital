@@ -1,11 +1,9 @@
 package com.scraping.bibliotecadigital.resource;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,26 +23,20 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping(value = "/products")
+@RequestMapping(value = "/api/livros")
 public class LivroResource {
 	
 	@Autowired
 	private LivroService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<LivroDTO>> findAll(
-			@RequestParam(value = "categoryId", defaultValue = "0") Long categoryId,
-			@RequestParam(value = "name", defaultValue = "") String name,
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
-			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
-			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
-			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy
-			) {
+	public ResponseEntity<List<LivroDTO>> findAll(
+			@RequestParam(value = "categoria", defaultValue = "0") Long categoria,
+			@RequestParam(value = "ano", defaultValue = "0") Integer ano,
+			@RequestParam(value = "autor", defaultValue = "0") Long autor) {
 
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		List<LivroDTO> list = service.findAll(categoria, ano, autor);
 		
-		Page<LivroDTO> list = service.findAllPaged(categoryId, name.trim(), pageRequest);
-
 		return ResponseEntity.ok().body(list);
 	}
 
@@ -63,15 +55,7 @@ public class LivroResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
 		return ResponseEntity.created(uri).body(dto);
 	}
-
-//	@PostMapping(value = "/image")
-//	public ResponseEntity<UriDTO> uploadImage(@RequestParam("file") MultipartFile file) {
-//		
-//		UriDTO dto = service.uploadFile(file);
-//		
-//		return ResponseEntity.ok().body(dto);
-//	}
-
+	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<LivroDTO> update(@PathVariable Long id, @Valid @RequestBody LivroDTO dto) {
 		
@@ -86,5 +70,20 @@ public class LivroResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@GetMapping(value = "/search")
+	public  ResponseEntity<List<LivroDTO>> findByTitulo(@RequestParam String titulo) {
+		
+		List<LivroDTO> list = service.findByTitulo(titulo);
+		
+		return ResponseEntity.ok().body(list);
+	}
+
+//	@PostMapping(value = "/image")
+//	public ResponseEntity<UriDTO> uploadImage(@RequestParam("file") MultipartFile file) {
+//		
+//		UriDTO dto = service.uploadFile(file);
+//		
+//		return ResponseEntity.ok().body(dto);
+//	}
 	
 }

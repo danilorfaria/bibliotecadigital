@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,22 +35,19 @@ public class LivroService {
 	private CategoriaRepository categoriaRepository;
 	
 	@Transactional(readOnly = true)
-	public List<LivroDTO> findAll() {
+	public List<LivroDTO> findAll(Long categoria, Integer ano, Long autor) {
 		
-		List<Livro> list = repository.findAll();
+		List<Livro> list = repository.findAllLivroWithCategoriaAnoAutor(categoria, ano, autor);
+		
 		return list.stream().map(x -> new LivroDTO(x)).collect(Collectors.toList());
 	}
-	
+
 	@Transactional(readOnly = true)
-	public Page<LivroDTO> findAllPaged(Long categoriaId, String name, PageRequest pageRequest) {
+	public List<LivroDTO> findByTitulo(String titulo) {
 		
-//		Page<Livro> page = repository.find(categoria, name, pageRequest);
-//		
-//		repository.findProductsWithCategories(page.getContent());
-//		
-//		return page.map(x -> new LivroDTO(x, x.getCategoria));
+		List<Livro> list = repository.findByTitulo(titulo);
 		
-		return null;
+		return list.stream().map(x -> new LivroDTO(x)).collect(Collectors.toList());
 	}
 
 	@Transactional(readOnly = true)

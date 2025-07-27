@@ -1,30 +1,27 @@
 package com.scraping.bibliotecadigital.services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.scraping.bibliotecadigital.dto.CategoriaDTO;
+import com.scraping.bibliotecadigital.dto.LivroDTO;
 import com.scraping.bibliotecadigital.entities.Categoria;
+import com.scraping.bibliotecadigital.entities.Livro;
 import com.scraping.bibliotecadigital.repositories.CategoriaRepository;
-import com.scraping.bibliotecadigital.services.exceptions.DataBaseException;
-import com.scraping.bibliotecadigital.services.exceptions.ResourceNotFoundException;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.scraping.bibliotecadigital.repositories.LivroRepository;
 
 @Service
 public class CategoriaService {
 	
 	@Autowired
 	private CategoriaRepository repository;
+	
+	@Autowired
+	private LivroRepository livroRepository;
 	
 	@Transactional(readOnly = true)
 	public List<CategoriaDTO> findAll() {
@@ -34,24 +31,6 @@ public class CategoriaService {
 		return list.stream().map(x -> new CategoriaDTO(x)).collect(Collectors.toList());
 	}
 	
-	@Transactional(readOnly = true)
-	public Page<CategoriaDTO> findAllPaged(PageRequest pageRequest) {
-
-		Page<Categoria> list = repository.findAll(pageRequest);
-		
-		return list.map(x -> new CategoriaDTO(x));
-	}
-
-	@Transactional(readOnly = true)
-	public CategoriaDTO findById(Long id) {
-		
-		Optional<Categoria> obj = repository.findById(id);
-		
-		Categoria entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		
-		return new CategoriaDTO(entity);
-	}
-
 	@Transactional
 	public CategoriaDTO insert(CategoriaDTO dto) {
 		
@@ -63,40 +42,15 @@ public class CategoriaService {
 		
 		return new CategoriaDTO(entity);
 	}
-
-	@Transactional
-	public CategoriaDTO update(Long id, CategoriaDTO dto) {
-		
-		try {
-			Categoria entity = repository.getReferenceById(id);
-			
-			copyDtoToEntity(dto, entity);
-			
-			entity = repository.save(entity);
-			
-			return new CategoriaDTO(entity);
-			
-		} catch (EntityNotFoundException e) {
-			
-			throw new ResourceNotFoundException("Id not found " + id);
-		}
-	}
-
-	public void delete(Long id) {
-		
-		try {
-			repository.deleteById(id);
-			
-		} catch (EmptyResultDataAccessException e) {
-		
-			throw new ResourceNotFoundException("Id not found " + id);
-			
-		} catch (DataIntegrityViolationException e) {
-			
-			throw new DataBaseException("Integrity violation");
-		}
-	}
 	
+	@Transactional(readOnly = true)
+	public List<LivroDTO> listarLivrosCategoria(Long autorId) {
+		
+		List<Livro> list = livroRepository.findLivroWithCategoria(autorId);
+		
+		return list.stream().map(x -> new LivroDTO(x)).collect(Collectors.toList());
+	}
+
 	private void copyDtoToEntity(CategoriaDTO dto, Categoria entity) {
 		
 		entity.setNome(dto.getNome());

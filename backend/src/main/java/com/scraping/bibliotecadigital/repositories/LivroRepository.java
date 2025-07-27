@@ -11,13 +11,19 @@ import com.scraping.bibliotecadigital.entities.Livro;
 @Repository
 public interface LivroRepository extends JpaRepository<Livro, Long> {
 	
-//	@Query("SELECT DISTINCT obj FROM Product obj INNER JOIN obj.categories cast WHERE "
-//			+ "(COALESCE(:categories) IS NULL OR cast IN :categories ) AND"
-//			+ "(LOWER(obj.name) LIKE LOWER(CONCAT ('%', :name, '%')) ) ")
-//	Page<Product> find(List<Category> categories, String name, Pageable pageable);
-//
-	
-	@Query("SELECT obj FROM Livro obj INNER JOIN obj.autor WHERE obj.autor.id = :autor ")
+	@Query("SELECT obj FROM Livro obj WHERE obj.autor.id = :autor ")
 	List<Livro> findLivroWithAutor(Long autor);
+
+	@Query("SELECT obj FROM Livro obj WHERE obj.categoria.id = :categoria ")
+	List<Livro> findLivroWithCategoria(Long categoria);
+
+	@Query("SELECT obj FROM Livro obj WHERE obj.categoria.id = :categoria AND obj obj.anoPublicacao = :ano AND obj.autor.id = :autor")
+	List<Livro> findAllLivroWithCategoriaAnoAutor(Long categoria, Integer ano, Long autor);
+	
+	@Query("SELECT obj FROM Livro obj WHERE "
+		+ "(LOWER(obj.titulo) LIKE LOWER(CONCAT ('%', :titulo, '%')) ) ")
+	 List<Livro> findByTitulo(String titulo);
+	
+	
 
 }
