@@ -2,6 +2,8 @@ package com.scraping.bibliotecadigital.dto;
 
 import java.io.Serializable;
 
+import com.scraping.bibliotecadigital.entities.Categoria;
+
 public class CategoriaDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -21,6 +23,13 @@ public class CategoriaDTO implements Serializable {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
+	}
+	
+	public CategoriaDTO(Categoria category) {
+		
+		this.id = category.getId();
+		this.nome = category.getNome();
+		this.descricao = category.getDescricao();
 	}
 
 	public Long getId() {
