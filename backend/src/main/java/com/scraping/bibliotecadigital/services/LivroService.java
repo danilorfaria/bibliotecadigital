@@ -1,7 +1,5 @@
 package com.scraping.bibliotecadigital.services;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,28 +12,29 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.scraping.bibliotecadigital.dto.CategoriaDTO;
 import com.scraping.bibliotecadigital.dto.LivroDTO;
 import com.scraping.bibliotecadigital.entities.Autor;
 import com.scraping.bibliotecadigital.entities.Categoria;
 import com.scraping.bibliotecadigital.entities.Livro;
+import com.scraping.bibliotecadigital.repositories.AutorRepository;
 import com.scraping.bibliotecadigital.repositories.CategoriaRepository;
 import com.scraping.bibliotecadigital.repositories.LivroRepository;
 import com.scraping.bibliotecadigital.services.exceptions.DataBaseException;
 import com.scraping.bibliotecadigital.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Service
 public class LivroService {
 
 	@Autowired
 	private LivroRepository repository;
+
+	@Autowired
+	private AutorRepository autorRepository;
 	
-//	@Autowired
-//	private CategoriaRepository categoriaRepository;
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 	
 	@Transactional(readOnly = true)
 	public List<LivroDTO> findAll() {
@@ -114,18 +113,21 @@ public class LivroService {
 		entity.setIsbn(dto.getIsbn());
 		entity.setAnoPublicacao(dto.getAnoPublicacao());
 		entity.setPreco(dto.getPreco());
-		entity.setAutor(dto.getAutorDTO());
-		entity.setCategoria(dto.getCategoriaDTO());
 		
-//		entity.getCategories().clear();
-//		
-//		for (CategoriaDTO catDto : dto.getCategoriaDTO()) {
-//			
-//			Categoria categoria = categoriaRepository.getOne(catDto.getId());
-//			entity.getCategoria().add(categoria);
-//		}
+		Autor autor = autorRepository.getReferenceById(dto.getAutorDTO().getId());
+		Categoria categoria = categoriaRepository.getReferenceById(dto.getCategoriaDTO().getId());
+		
+		autor.setNome(dto.getAutorDTO().getNome());
+		autor.setEmail(dto.getAutorDTO().getEmail());
+		autor.setDataNascimento(dto.getAutorDTO().getDataNascimento());
+		
+		categoria.setNome(dto.getCategoriaDTO().getNome());
+		categoria.setDescricao(dto.getCategoriaDTO().getDescricao());
+		
+		entity.setAutor(autor);
+		entity.setCategoria(categoria);
 	}
-
+	
 //	public UriDTO uploadFile(MultipartFile file) {
 //		
 //		URL url = s3Service.uploadFile(file);

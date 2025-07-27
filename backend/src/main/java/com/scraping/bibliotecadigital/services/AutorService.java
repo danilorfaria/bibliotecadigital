@@ -12,69 +12,69 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.scraping.bibliotecadigital.dto.CategoriaDTO;
-import com.scraping.bibliotecadigital.entities.Categoria;
-import com.scraping.bibliotecadigital.repositories.CategoriaRepository;
+import com.scraping.bibliotecadigital.dto.AutorDTO;
+import com.scraping.bibliotecadigital.entities.Autor;
+import com.scraping.bibliotecadigital.repositories.AutorRepository;
 import com.scraping.bibliotecadigital.services.exceptions.DataBaseException;
 import com.scraping.bibliotecadigital.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class CategoriaService {
+public class AutorService {
 	
 	@Autowired
-	private CategoriaRepository repository;
+	private AutorRepository repository;
 	
 	@Transactional(readOnly = true)
-	public List<CategoriaDTO> findAll() {
+	public List<AutorDTO> findAll() {
 		
-		List<Categoria> list = repository.findAll();
+		List<Autor> list = repository.findAll();
 		
-		return list.stream().map(x -> new CategoriaDTO(x)).collect(Collectors.toList());
+		return list.stream().map(x -> new AutorDTO(x)).collect(Collectors.toList());
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<CategoriaDTO> findAllPaged(PageRequest pageRequest) {
+	public Page<AutorDTO> findAllPaged(PageRequest pageRequest) {
 
-		Page<Categoria> list = repository.findAll(pageRequest);
+		Page<Autor> list = repository.findAll(pageRequest);
 		
-		return list.map(x -> new CategoriaDTO(x));
+		return list.map(x -> new AutorDTO(x));
 	}
 
 	@Transactional(readOnly = true)
-	public CategoriaDTO findById(Long id) {
+	public AutorDTO findById(Long id) {
 		
-		Optional<Categoria> obj = repository.findById(id);
+		Optional<Autor> obj = repository.findById(id);
 		
-		Categoria entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+		Autor entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		
-		return new CategoriaDTO(entity);
+		return new AutorDTO(entity);
 	}
 
 	@Transactional
-	public CategoriaDTO insert(CategoriaDTO dto) {
+	public AutorDTO insert(AutorDTO dto) {
 		
-		Categoria entity = new Categoria();
+		Autor entity = new Autor();
 		
 		copyDtoToEntity(dto, entity);
 		
 		entity = repository.save(entity);
 		
-		return new CategoriaDTO(entity);
+		return new AutorDTO(entity);
 	}
 
 	@Transactional
-	public CategoriaDTO update(Long id, CategoriaDTO dto) {
+	public AutorDTO update(Long id, AutorDTO dto) {
 		
 		try {
-			Categoria entity = repository.getReferenceById(id);
+			Autor entity = repository.getReferenceById(id);
 			
 			copyDtoToEntity(dto, entity);
 			
 			entity = repository.save(entity);
 			
-			return new CategoriaDTO(entity);
+			return new AutorDTO(entity);
 			
 		} catch (EntityNotFoundException e) {
 			
@@ -97,10 +97,11 @@ public class CategoriaService {
 		}
 	}
 	
-	private void copyDtoToEntity(CategoriaDTO dto, Categoria entity) {
+	private void copyDtoToEntity(AutorDTO dto, Autor entity) {
 		
 		entity.setNome(dto.getNome());
-		entity.setDescricao(dto.getDescricao());
+		entity.setEmail(dto.getEmail());
+		entity.setDataNascimento(dto.getDataNascimento());
 	}
 
 }
