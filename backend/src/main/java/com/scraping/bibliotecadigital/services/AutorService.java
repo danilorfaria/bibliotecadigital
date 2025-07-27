@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.scraping.bibliotecadigital.dto.AutorDTO;
+import com.scraping.bibliotecadigital.dto.LivroDTO;
 import com.scraping.bibliotecadigital.entities.Autor;
+import com.scraping.bibliotecadigital.entities.Livro;
 import com.scraping.bibliotecadigital.repositories.AutorRepository;
+import com.scraping.bibliotecadigital.repositories.LivroRepository;
 import com.scraping.bibliotecadigital.services.exceptions.DataBaseException;
 import com.scraping.bibliotecadigital.services.exceptions.ResourceNotFoundException;
 
@@ -25,6 +28,9 @@ public class AutorService {
 	
 	@Autowired
 	private AutorRepository repository;
+
+	@Autowired
+	private LivroRepository livroRepository;
 	
 	@Transactional(readOnly = true)
 	public List<AutorDTO> findAll() {
@@ -50,6 +56,14 @@ public class AutorService {
 		Autor entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		
 		return new AutorDTO(entity);
+	}
+	
+	@Transactional(readOnly = true)
+	public List<LivroDTO> listarLivrosAutor(Long autorId) {
+		
+		List<Livro> list = livroRepository.findLivroWithAutor(autorId);
+		
+		return list.stream().map(x -> new LivroDTO(x)).collect(Collectors.toList());
 	}
 
 	@Transactional
