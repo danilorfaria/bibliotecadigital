@@ -17,13 +17,11 @@ public interface LivroRepository extends JpaRepository<Livro, Long> {
 	@Query("SELECT obj FROM Livro obj WHERE obj.categoria.id = :categoria ")
 	List<Livro> findLivroWithCategoria(Long categoria);
 
-	@Query("SELECT obj FROM Livro obj WHERE obj.categoria.id = :categoria AND obj.anoPublicacao = :ano AND obj.autor.id = :autor")
+	@Query("SELECT obj FROM Livro obj WHERE (:categoria is null OR obj.categoria.id = :categoria) AND (:ano is null OR obj.anoPublicacao = :ano) AND (:autor is null OR obj.autor.id = :autor)" )
 	List<Livro> findAllLivroWithCategoriaAnoAutor(Long categoria, Integer ano, Long autor);
 	
 	@Query("SELECT obj FROM Livro obj WHERE "
 		+ "(LOWER(obj.titulo) LIKE LOWER(CONCAT ('%', :titulo, '%')) ) ")
 	 List<Livro> findByTitulo(String titulo);
 	
-	
-
 }

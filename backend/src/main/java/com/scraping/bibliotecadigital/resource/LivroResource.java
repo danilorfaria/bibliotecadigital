@@ -31,9 +31,9 @@ public class LivroResource {
 	
 	@GetMapping
 	public ResponseEntity<List<LivroDTO>> findAll(
-			@RequestParam(value = "categoria", defaultValue = "0") Long categoria,
-			@RequestParam(value = "ano", defaultValue = "0") Integer ano,
-			@RequestParam(value = "autor", defaultValue = "0") Long autor) {
+			@RequestParam(value = "categoria", required = false) Long categoria,
+			@RequestParam(value = "ano", required = false) Integer ano,
+			@RequestParam(value = "autor", required = false) Long autor) {
 
 		List<LivroDTO> list = service.findAll(categoria, ano, autor);
 		
