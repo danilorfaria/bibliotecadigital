@@ -1,6 +1,7 @@
 package com.scraping.bibliotecadigital.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -109,8 +110,18 @@ public class LivroService {
 		entity.setAnoPublicacao(dto.getAnoPublicacao());
 		entity.setPreco(dto.getPreco());
 		
-		Autor autor = autorRepository.getReferenceById(dto.getAutorDTO().getId());
-		Categoria categoria = categoriaRepository.getReferenceById(dto.getCategoriaDTO().getId());
+		Autor autor = new Autor();
+		Categoria categoria = new Categoria();
+		
+		if (Objects.nonNull(dto.getAutorDTO().getId())) {
+			
+			autor = autorRepository.getReferenceById(dto.getAutorDTO().getId());
+		}
+		
+		if (Objects.nonNull(dto.getCategoriaDTO().getId())) {
+			
+			categoria = categoriaRepository.getReferenceById(dto.getCategoriaDTO().getId());
+		}
 		
 		autor.setNome(dto.getAutorDTO().getNome());
 		autor.setEmail(dto.getAutorDTO().getEmail());

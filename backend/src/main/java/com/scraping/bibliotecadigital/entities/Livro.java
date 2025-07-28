@@ -3,6 +3,7 @@ package com.scraping.bibliotecadigital.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,11 +30,11 @@ public class Livro implements Serializable {
 	
 	private BigDecimal preco;
 	
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "AUTOR_ID")
 	private Autor autor;
 	
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "CATEGORIA_ID")
 	private Categoria categoria;
 	
