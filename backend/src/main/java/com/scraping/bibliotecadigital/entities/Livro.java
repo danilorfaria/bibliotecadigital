@@ -39,7 +39,7 @@ public class Livro implements Serializable {
 	private Categoria categoria;
 	
 	public Livro() {
-		
+		super();
 	}
 
 	public Livro(Long id, String titulo, String isbn, Integer anoPublicacao, BigDecimal preco, Autor autor,

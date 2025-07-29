@@ -26,6 +26,11 @@ public class AutorDTO implements Serializable {
 		super();
 	}
 
+	public AutorDTO(Long id) {
+		super();
+		this.id = id;
+	}
+
 	public AutorDTO(Long id, String nome, String email, LocalDate dataNascimento) {
 		super();
 		this.id = id;

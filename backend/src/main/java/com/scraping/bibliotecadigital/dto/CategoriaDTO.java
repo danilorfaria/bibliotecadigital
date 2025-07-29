@@ -18,6 +18,11 @@ public class CategoriaDTO implements Serializable {
 		super();
 	}
 	
+	public CategoriaDTO(Long id) {
+		super();
+		this.id = id;
+	}
+
 	public CategoriaDTO(Long id, String nome, String descricao) {
 		super();
 		this.id = id;

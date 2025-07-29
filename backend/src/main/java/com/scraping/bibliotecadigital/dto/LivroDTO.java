@@ -33,7 +33,7 @@ public class LivroDTO implements Serializable {
 	private CategoriaDTO categoriaDTO;
 	
 	public LivroDTO() {
-		
+		super();
 	}
 
 	public LivroDTO(Long id, String titulo, String isbn, Integer anoPublicacao, BigDecimal preco, AutorDTO autorDTO,
