@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import javax.ws.rs.HttpMethod;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
@@ -41,31 +43,35 @@ public class IntegracaoLivroScrapingService {
 		try {
 			Client client = Client.create();
 			
-			Builder configured = client.resource(url).type(MediaType.TEXT_HTML);
+			Builder configured = client.resource(url)
+					.header(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36")
+					.header(HttpHeaders.ACCEPT_CHARSET, "UTF-8").header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_HTML);
+					//.method(HttpMethod.POST, Builder.class).type(MediaType.TEXT_HTML);
 			
 			ClientResponse response = configured.get(ClientResponse.class);
-//			String responseData = response.getEntity(String.class);
-			StringBuilder responseData = new StringBuilder();
-
-			String linha = "";;
-			InputStream inputStream = response.getEntityInputStream();
-					
-			try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-				
-				while (Objects.nonNull((linha = reader.readLine()))) {
-					
-					responseData.append(linha); 
-				}
-				
-			} finally {
-				
-				inputStream.close();
-			}
-			
-			Map<String, String> retorno = readAmazonBooks(responseData.toString());
+			String responseData = response.getEntity(String.class);
+//			System.out.println(responseData1);
+//			StringBuilder responseData = new StringBuilder();
+//
+//			String linha = "";;
+//			InputStream inputStream = response.getEntityInputStream();
+//					
+//			try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+//				
+//				while (Objects.nonNull((linha = reader.readLine()))) {
+//					
+//					responseData.append(linha); 
+//				}
+//				
+//			} finally {
+//				
+//				inputStream.close();
+//			}
+//			
+//			Map<String, String> retorno = readAmazonBooks(responseData.toString());
+			Map<String, String> retorno = readAmazonBooks(responseData);
 
 			if (response.getStatus() != 200) {
-				
 				
 				throw new Exception("Erro ao enviar requisição para o SIICO, status " + response.getStatus());
 			}
@@ -85,11 +91,20 @@ public class IntegracaoLivroScrapingService {
 		String linha = "";
 		
 		try {
-//			entrada.startsWith("<span id=\"productTitle\" class=\"a-size-large celwidget\">")
-			linha = entrada.substring(entrada.indexOf("<span id=\"productTitle\" class=\"a-size-large celwidget\">"), entrada.indexOf("</span>"));
-			System.out.println(linha);
+			if (entrada.contains("<span id=\"productTitle\" class=\"a-size-large celwidget\">")) {
+				
+				linha = entrada.substring(entrada.indexOf("<span id=\"productTitle\" class=\"a-size-large celwidget\">"));
+				linha = linha.substring(linha.indexOf(">") + 1, linha.indexOf("</span>")).trim();
+				System.out.println(linha);
+			}
+
+			if (entrada.contains("ISBN-10")) {
+				
+				linha = entrada.substring(entrada.indexOf("ISBN-10"));
+				linha = linha.substring(linha.indexOf("</span> <span>") + 1, linha.indexOf("</span> </span></li>")).trim();
+				System.out.println(linha);
+			}
 			
-			System.out.println(entrada.replaceAll("<span id=\"productTitle\" class=\"a-size-large celwidget\">", "").replaceAll("</span>", "").trim());
 			
 			System.out.println(entrada.replaceAll("ISBN-10 &rlm; :&lrm;</span> <span>", "").replaceAll("</span> </span></li>", "").trim());
 
