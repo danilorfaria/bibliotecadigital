@@ -103,6 +103,7 @@ public class LivroService {
 		}
 	}
 	
+	@Transactional
 	private void copyDtoToEntity(LivroDTO dto, Livro entity) {
 		
 		entity.setTitulo(dto.getTitulo());
@@ -115,12 +116,22 @@ public class LivroService {
 		
 		if (Objects.nonNull(dto.getAutorDTO().getId())) {
 			
-			autor = autorRepository.getReferenceById(dto.getAutorDTO().getId());
+			Optional<Autor> obj = autorRepository.findById(dto.getAutorDTO().getId());
+			
+			if (!obj.isEmpty() && Objects.nonNull(obj.get())) {
+				
+				autor = obj.get();
+			}
 		}
 		
 		if (Objects.nonNull(dto.getCategoriaDTO().getId())) {
 			
-			categoria = categoriaRepository.getReferenceById(dto.getCategoriaDTO().getId());
+			Optional<Categoria> obj = categoriaRepository.findById(dto.getCategoriaDTO().getId());
+			
+			if (!obj.isEmpty() && Objects.nonNull(obj.get())) {
+				
+				categoria = obj.get();
+			}
 		}
 		
 		autor.setNome(dto.getAutorDTO().getNome());
