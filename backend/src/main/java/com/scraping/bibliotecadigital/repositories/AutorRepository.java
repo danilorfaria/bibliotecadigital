@@ -8,5 +8,5 @@ import com.scraping.bibliotecadigital.entities.Autor;
 @Repository
 public interface AutorRepository extends JpaRepository<Autor, Long> {
 
-	
+	Autor findByEmail(String email);
 }

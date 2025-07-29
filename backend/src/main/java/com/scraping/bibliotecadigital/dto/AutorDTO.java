@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.scraping.bibliotecadigital.entities.Autor;
+import com.scraping.bibliotecadigital.services.validation.UserInsertValid;
 
+import jakarta.validation.constraints.Email;
+
+@UserInsertValid
 public class AutorDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -13,6 +17,7 @@ public class AutorDTO implements Serializable {
 	
 	private String nome;
 
+	@Email(message = "Email do autor deve ter formato válido")
 	private String email;
 	
 	private LocalDate dataNascimento;

@@ -22,6 +22,8 @@ import com.scraping.bibliotecadigital.dto.AutorDTO;
 import com.scraping.bibliotecadigital.dto.LivroDTO;
 import com.scraping.bibliotecadigital.services.AutorService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/api/autores")
 public class AutorResource {
@@ -49,7 +51,7 @@ public class AutorResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<AutorDTO> insert(@RequestBody AutorDTO dto) {
+	public ResponseEntity<AutorDTO> insert(@Valid @RequestBody AutorDTO dto) {
 		
 		dto = service.insert(dto);
 		
@@ -59,7 +61,7 @@ public class AutorResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<AutorDTO> update(@PathVariable Long id, @RequestBody AutorDTO dto) {
+	public ResponseEntity<AutorDTO> update(@PathVariable Long id, @Valid @RequestBody AutorDTO dto) {
 		
 		dto = service.update(id, dto);
 		

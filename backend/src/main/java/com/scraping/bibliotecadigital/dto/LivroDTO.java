@@ -5,18 +5,27 @@ import java.math.BigDecimal;
 
 import com.scraping.bibliotecadigital.entities.Livro;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
+
 public class LivroDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
 	
+	@NotBlank(message = "Título do livro não pode ser vazio")
 	private String titulo;
 
+	@Pattern(regexp = "\\d{10}|\\d{13}", message = "ISBN deve ter formato válido (10 ou 13 dígitos)")
 	private String isbn;
 	
+	@Future(message = "Ano de publicação não pode ser futuro")
 	private Integer anoPublicacao;
 	
+	@Positive(message = "Preço deve ser positivo")
 	private BigDecimal preco;
 	
 	private AutorDTO autorDTO;
