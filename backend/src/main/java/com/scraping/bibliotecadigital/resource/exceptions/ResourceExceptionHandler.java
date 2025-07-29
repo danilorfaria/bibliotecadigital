@@ -14,11 +14,6 @@ import com.scraping.bibliotecadigital.services.exceptions.ResourceNotFoundExcept
 
 import jakarta.servlet.http.HttpServletRequest;
 
-//import com.amazonaws.AmazonClientException;
-//import com.amazonaws.AmazonServiceException;
-//import com.devsuperior.dscatalog.Services.exceptions.DataBaseException;
-//import com.devsuperior.dscatalog.Services.exceptions.ResourceNotFoundException;
-
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
@@ -71,36 +66,6 @@ public class ResourceExceptionHandler {
 		
 		return ResponseEntity.status(status).body(error);
 	}
-	
-//	@ExceptionHandler(AmazonServiceException.class)
-//	public ResponseEntity<StandardError> AmazonService(AmazonServiceException e, HttpServletRequest request) {
-//		
-//		HttpStatus status = HttpStatus.BAD_REQUEST;
-//		StandardError error = new StandardError();
-//		
-//		error.setTimestamp(Instant.now());
-//		error.setStatus(status.value());
-//		error.setError("AWS exception");
-//		error.setMessage(e.getMessage());
-//		error.setPath(request.getRequestURI());
-//		
-//		return ResponseEntity.status(status).body(error);
-//	}
-//
-//	@ExceptionHandler(AmazonClientException.class)
-//	public ResponseEntity<StandardError> amazonClient(AmazonClientException e, HttpServletRequest request) {
-//		
-//		HttpStatus status = HttpStatus.BAD_REQUEST;
-//		StandardError error = new StandardError();
-//		
-//		error.setTimestamp(Instant.now());
-//		error.setStatus(status.value());
-//		error.setError("AWS exception");
-//		error.setMessage(e.getMessage());
-//		error.setPath(request.getRequestURI());
-//		
-//		return ResponseEntity.status(status).body(error);
-//	}
 	
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<StandardError> illegalArgument(IllegalArgumentException e, HttpServletRequest request) {

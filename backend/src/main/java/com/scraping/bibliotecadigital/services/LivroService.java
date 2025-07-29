@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -25,6 +27,8 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class LivroService {
+	
+	private static Logger logger = LoggerFactory.getLogger(LivroService.class);
 
 	@Autowired
 	private LivroRepository repository;
@@ -84,6 +88,7 @@ public class LivroService {
 			
 		} catch (EntityNotFoundException e) {
 			
+			logger.error(e.getMessage());
 			throw new ResourceNotFoundException("Id not found " + id);
 		}
 	}
@@ -95,10 +100,12 @@ public class LivroService {
 			
 		} catch (EmptyResultDataAccessException e) {
 		
+			logger.error(e.getMessage());
 			throw new ResourceNotFoundException("Id not found " + id);
 			
 		} catch (DataIntegrityViolationException e) {
-			
+
+			logger.error(e.getMessage());
 			throw new DataBaseException("Integrity violation");
 		}
 	}
@@ -144,12 +151,5 @@ public class LivroService {
 		entity.setAutor(autor);
 		entity.setCategoria(categoria);
 	}
-	
-//	public UriDTO uploadFile(MultipartFile file) {
-//		
-//		URL url = s3Service.uploadFile(file);
-//		
-//		return new UriDTO(url.toString());
-//	}
 
 }
