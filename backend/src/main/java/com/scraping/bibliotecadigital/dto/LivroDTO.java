@@ -22,7 +22,7 @@ public class LivroDTO implements Serializable {
 	@Pattern(regexp = "\\d{10}|\\d{13}", message = "ISBN deve ter formato válido (10 ou 13 dígitos)")
 	private String isbn;
 	
-	@Future(message = "Ano de publicação não pode ser futuro")
+	//@Future(message = "Ano de publicação não pode ser futuro")
 	private Integer anoPublicacao;
 	
 	@Positive(message = "Preço deve ser positivo")

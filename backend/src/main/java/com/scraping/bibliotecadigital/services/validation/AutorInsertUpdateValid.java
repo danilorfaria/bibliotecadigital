@@ -8,14 +8,15 @@ import java.lang.annotation.Target;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
-@Constraint(validatedBy = UserInsertValidator.class)
+@Constraint(validatedBy = AutorInsertUpdateValidator.class)
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 
-public @interface UserInsertValid {
+public @interface AutorInsertUpdateValid {
 	String message() default "Validation error";
 
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
+	
 }

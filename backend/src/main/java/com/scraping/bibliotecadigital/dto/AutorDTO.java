@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.scraping.bibliotecadigital.entities.Autor;
-import com.scraping.bibliotecadigital.services.validation.UserInsertValid;
+import com.scraping.bibliotecadigital.services.validation.AutorInsertUpdateValid;
 
 import jakarta.validation.constraints.Email;
 
-@UserInsertValid
+@AutorInsertUpdateValid
 public class AutorDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
