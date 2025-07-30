@@ -17,6 +17,8 @@ import com.scraping.bibliotecadigital.dto.LivroScrapingDTO;
 import com.scraping.bibliotecadigital.services.LivroScrapingService;
 import com.scraping.bibliotecadigital.services.LivroService;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping(value = "/api/livros")
@@ -29,7 +31,7 @@ public class LivroScrapingResource {
 	private LivroScrapingService livroScraping;
 	
 	@PostMapping(value = "/importar")
-	public ResponseEntity<LivroDTO> extrairDadosLivro(@RequestBody LivroScrapingDTO dto) {
+	public ResponseEntity<LivroDTO> extrairDadosLivro(@Valid @RequestBody LivroScrapingDTO dto) {
 		
 		LivroDTO livroDTO = livroScraping.extrairDadosLivro(dto.getUrl());
 

@@ -1,6 +1,7 @@
 package com.scraping.bibliotecadigital.services;
 
 import java.math.BigDecimal;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.scraping.bibliotecadigital.dto.LivroDTO;
+import com.scraping.bibliotecadigital.services.exceptions.ResourceNotFoundException;
 import com.scraping.bibliotecadigital.services.integracao.IntegracaoLivroScrapingService;
 
 @Service
@@ -32,11 +34,16 @@ public class LivroScrapingService {
 			dto.setIsbn(retorno.get("isbn"));
 			dto.setAnoPublicacao(Integer.valueOf(retorno.get("anoPublicacao")));
 			dto.setPreco(new BigDecimal(retorno.get("preco")));
+				
+		} catch (UnknownHostException e) {
+			
+			logger.error(e.getMessage());
+			throw new ResourceNotFoundException("URL not found " + url);
 			
 		} catch (Exception e) {
 
 			logger.error(e.getMessage());
-			return null;
+			return dto;
 		}
 		
 		return dto;

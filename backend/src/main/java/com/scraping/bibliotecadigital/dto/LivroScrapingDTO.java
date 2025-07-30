@@ -2,6 +2,9 @@ package com.scraping.bibliotecadigital.dto;
 
 import java.io.Serializable;
 
+import com.scraping.bibliotecadigital.services.validation.URLValid;
+
+@URLValid
 public class LivroScrapingDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

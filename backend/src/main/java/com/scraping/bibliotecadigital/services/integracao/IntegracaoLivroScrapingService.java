@@ -1,5 +1,6 @@
 package com.scraping.bibliotecadigital.services.integracao;
 
+import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -20,10 +21,15 @@ public class IntegracaoLivroScrapingService {
 	
 	private static Logger logger = LoggerFactory.getLogger(AutorService.class);
 
-	public Map<String, String> extrairDadosLivroScrapingAmazonBooks(String url) throws Exception {
+	public Map<String, String> extrairDadosLivroScrapingAmazonBooks(String url) throws UnknownHostException, Exception {
 		
 		try {
 			return connectarLivroScrapingAmazonBooks(url);
+			
+		} catch (UnknownHostException e) {
+
+			logger.error(e.getMessage());
+			throw e;
 			
 		} catch (Exception e) {
 			
@@ -32,7 +38,7 @@ public class IntegracaoLivroScrapingService {
 		}
 	}
 	
-	private Map<String, String> connectarLivroScrapingAmazonBooks(String url) throws Exception {
+	private Map<String, String> connectarLivroScrapingAmazonBooks(String url) throws UnknownHostException, Exception {
 		
 		try {
 			Client client = Client.create();
@@ -48,6 +54,16 @@ public class IntegracaoLivroScrapingService {
 
 			if (response.getStatus() != 200) {
 				
+				if (response.getStatus() == 404) {
+					
+					throw new Exception("página não encontrada: " + url + ", status: " + response.getStatus());
+				}
+
+				if (response.getStatus() == 408 || response.getStatus() == 504 ) {
+					
+					throw new Exception("timeout: " + url + ", status: " + response.getStatus());
+				}
+				
 				throw new Exception("Erro ao enviar requisição para: " + url + ", status: " + response.getStatus());
 			}
 
@@ -56,7 +72,7 @@ public class IntegracaoLivroScrapingService {
 		} catch (Exception e) {
 			
 			logger.error(e.getMessage());
-			throw e;
+			throw new UnknownHostException(e.getMessage());
 		}
 	}
 	
