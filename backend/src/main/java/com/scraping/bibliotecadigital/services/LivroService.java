@@ -128,6 +128,21 @@ public class LivroService {
 			if (!obj.isEmpty() && Objects.nonNull(obj.get())) {
 				
 				autor = obj.get();
+				
+				if (Objects.isNull(dto.getAutorDTO().getNome())) {
+					
+					dto.getAutorDTO().setNome(autor.getNome());
+				}
+
+				if (Objects.isNull(dto.getAutorDTO().getEmail())) {
+					
+					dto.getAutorDTO().setEmail(autor.getEmail());
+				}
+
+				if (Objects.isNull(dto.getAutorDTO().getDataNascimento())) {
+					
+					dto.getAutorDTO().setDataNascimento(autor.getDataNascimento());
+				}
 			}
 		}
 		
@@ -138,6 +153,16 @@ public class LivroService {
 			if (!obj.isEmpty() && Objects.nonNull(obj.get())) {
 				
 				categoria = obj.get();
+				
+				if (Objects.isNull(dto.getCategoriaDTO().getNome())) {
+					
+					dto.getCategoriaDTO().setNome(categoria.getNome());
+				}
+				
+				if (Objects.isNull(dto.getCategoriaDTO().getDescricao())) {
+					
+					dto.getCategoriaDTO().setDescricao(categoria.getDescricao());
+				}
 			}
 		}
 		

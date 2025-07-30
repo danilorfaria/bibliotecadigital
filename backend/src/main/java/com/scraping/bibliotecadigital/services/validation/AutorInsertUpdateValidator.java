@@ -46,9 +46,9 @@ public class AutorInsertUpdateValidator implements ConstraintValidator<AutorInse
 			if (Objects.nonNull(uriVars) && !uriVars.isEmpty()) {
 				
 				list.clear();
-				Long userId = Long.parseLong(uriVars.get("id"));
+				Long autorId = Long.parseLong(uriVars.get("id"));
 				
-				if (Objects.nonNull(entity) && Objects.nonNull(userId) && userId != entity.getId()) {
+				if (Objects.nonNull(entity) && Objects.nonNull(autorId) && autorId != entity.getId()) {
 					
 					list.add(new FieldMessage("email", "Email já existe"));
 				}

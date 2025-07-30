@@ -24,4 +24,6 @@ public interface LivroRepository extends JpaRepository<Livro, Long> {
 		+ "(LOWER(obj.titulo) LIKE LOWER(CONCAT ('%', :titulo, '%')) ) ")
 	 List<Livro> findByTitulo(String titulo);
 	
+	Livro findByIsbn(String Isbn);
+	
 }

@@ -1,14 +1,8 @@
 package com.scraping.bibliotecadigital.services.integracao;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 
-import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
@@ -26,19 +20,19 @@ public class IntegracaoLivroScrapingService {
 	
 	private static Logger logger = LoggerFactory.getLogger(AutorService.class);
 
-	public Map<String, String> extrairDadosLivroScrapingAmazonBooks(String url) {
+	public Map<String, String> extrairDadosLivroScrapingAmazonBooks(String url) throws Exception {
 		
 		try {
 			return connectarLivroScrapingAmazonBooks(url);
 			
 		} catch (Exception e) {
 			
-			logger.info(e.getMessage());
-			return null; 
+			logger.error(e.getMessage());
+			throw e;
 		}
 	}
 	
-	private Map<String, String> connectarLivroScrapingAmazonBooks(String url) {
+	private Map<String, String> connectarLivroScrapingAmazonBooks(String url) throws Exception {
 		
 		try {
 			Client client = Client.create();
@@ -46,49 +40,30 @@ public class IntegracaoLivroScrapingService {
 			Builder configured = client.resource(url)
 					.header(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36")
 					.header(HttpHeaders.ACCEPT_CHARSET, "UTF-8").header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_HTML);
-					//.method(HttpMethod.POST, Builder.class).type(MediaType.TEXT_HTML);
 			
 			ClientResponse response = configured.get(ClientResponse.class);
 			String responseData = response.getEntity(String.class);
-//			System.out.println(responseData1);
-//			StringBuilder responseData = new StringBuilder();
-//
-//			String linha = "";;
-//			InputStream inputStream = response.getEntityInputStream();
-//					
-//			try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-//				
-//				while (Objects.nonNull((linha = reader.readLine()))) {
-//					
-//					responseData.append(linha); 
-//				}
-//				
-//			} finally {
-//				
-//				inputStream.close();
-//			}
-//			
-//			Map<String, String> retorno = readAmazonBooks(responseData.toString());
+			
 			Map<String, String> retorno = readAmazonBooks(responseData);
 
 			if (response.getStatus() != 200) {
 				
-				throw new Exception("Erro ao enviar requisição para o SIICO, status " + response.getStatus());
+				throw new Exception("Erro ao enviar requisição para: " + url + ", status: " + response.getStatus());
 			}
 
 			return retorno;
 			
 		} catch (Exception e) {
 			
-			logger.info(e.getMessage());
-			return null;
+			logger.error(e.getMessage());
+			throw e;
 		}
 	}
 	
 	private Map<String, String> readAmazonBooks(String entrada) throws Exception {
 		
-		Map<String, String> saida = new TreeMap<>();
 		String linha = "";
+		Map<String, String> saida = new TreeMap<>();
 		
 		try {
 			if (entrada.contains("<span id=\"productTitle\" class=\"a-size-large celwidget\">")) {
@@ -96,32 +71,49 @@ public class IntegracaoLivroScrapingService {
 				linha = entrada.substring(entrada.indexOf("<span id=\"productTitle\" class=\"a-size-large celwidget\">"));
 				linha = linha.substring(linha.indexOf(">") + 1, linha.indexOf("</span>")).trim();
 				System.out.println(linha);
+				saida.put("titulo", linha);
 			}
 
 			if (entrada.contains("ISBN-10")) {
 				
 				linha = entrada.substring(entrada.indexOf("ISBN-10"));
-				linha = linha.substring(linha.indexOf("</span> <span>") + 1, linha.indexOf("</span> </span></li>")).trim();
+				linha = linha.substring(linha.indexOf("<div class=\"a-section a-spacing-none a-text-center rpi-attribute-value\"> <span>") + 1, linha.indexOf("</span> </div> </div>  </li>")).trim();
+				linha = linha.substring(linha.indexOf("<span>") + 6).trim();
 				System.out.println(linha);
+				saida.put("isbn", linha);
 			}
 			
-			
-			System.out.println(entrada.replaceAll("ISBN-10 &rlm; :&lrm;</span> <span>", "").replaceAll("</span> </span></li>", "").trim());
+			if (entrada.contains("<span id=\"productSubtitle\" class=\"a-size-medium a-color-secondary celwidget\">")) {
+				
+				linha = entrada.substring(entrada.indexOf("<span id=\"productSubtitle\" class=\"a-size-medium a-color-secondary celwidget\">"));
+				linha = linha.substring(linha.indexOf(">") + 1, linha.indexOf("</span>")).trim();
+				linha = linha.substring(linha.length() - 5, linha.length()).trim();
+				System.out.println(linha);
+				saida.put("anoPublicacao", linha);
+				
+			}
 
-			System.out.println(entrada.replaceAll("<span id=\"productSubtitle\" class=\"a-size-medium a-color-secondary celwidget\">", "").replace("</span>", "").trim());
-			
-			System.out.println(entrada.replaceAll("class=\"a-price-whole\">", "").replaceAll("<span", "").trim() + "." + entrada.replaceAll("\"a-price-fraction\">", "").replaceAll("</span>", "").trim());
+			if (entrada.contains("class=\"a-price-whole\">")) {
+				
+				linha = entrada.substring(entrada.indexOf("class=\"a-price-whole\">"));
+				linha = linha.substring(linha.indexOf(">") + 1, linha.indexOf("</span>")).trim();
+				linha = linha.substring(0, linha.indexOf("<span class=\"a-price-decimal\">,")).trim();
+				System.out.println(linha);
+				saida.put("preco", linha);
 
-			
-			saida.put("titulo", entrada.replace("<span id=\"productTitle\" class=\"a-size-large celwidget\">", "").replace("</span>", "").trim());
-			saida.put("isbn", entrada.replace("ISBN-10 &rlm; :&lrm;</span> <span>", "").replace("</span> </span></li>", "").trim());
-			saida.put("anoPublicacao", entrada.replace("<span id=\"productSubtitle\" class=\"a-size-medium a-color-secondary celwidget\">", "").replace("</span>", "").trim());
-			saida.put("preco", entrada.replace("class=\"a-price-whole\">", "").replace("<span", "").trim() + "." + entrada.replace("\"a-price-fraction\">", "").replace("</span>", "").trim());
-			
+				if (entrada.contains("\"a-price-fraction\">")) {
+
+					linha = entrada.substring(entrada.indexOf("\"a-price-fraction\">")).trim();
+					linha = linha.substring(linha.indexOf("\"a-price-fraction\">"), linha.indexOf("</span></span></span>")).trim();
+					linha = linha.substring(linha.indexOf(">") + 1).trim();
+					System.out.println(linha);
+					saida.put("preco", saida.get("preco") + "." + linha);
+				}
+			}
 			
 		} catch (Exception e) {
 			
-			logger.info(e.getMessage());
+			logger.error(e.getMessage());
 			throw new Exception("Erro de acesso ao serviço : " + entrada);
 		}
 		
