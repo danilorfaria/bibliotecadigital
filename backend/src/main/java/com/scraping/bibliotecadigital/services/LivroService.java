@@ -70,7 +70,15 @@ public class LivroService {
 		Livro entity = new Livro();
 		
 		copyDtoToEntity(dto, entity);
-		entity = repository.save(entity);
+		
+		try {
+			entity = repository.save(entity);
+			
+		} catch (Exception e) {
+
+			logger.error(e.getMessage());
+			throw new DataBaseException("Integrity violation");
+		}
 		
 		return new LivroDTO(entity);
 	}
