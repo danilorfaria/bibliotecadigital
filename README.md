@@ -44,7 +44,7 @@ Criar image
 
 docker build -t bibliotecadigital:v1 .
 
-Rodar conteira da image
+Rodar conteiner docker da imagem bibliotecadigital
 
 docker run -p 8080:8080 --name bibliotecadigital bibliotecadigital:v1
 
@@ -63,6 +63,8 @@ docker run -p 8080:8080 --name bibliotecadigital bibliotecadigital:v1
 Nome da Collection:
 
 BibliotecaDigital
+
+Importar tanto a variável de ambiente biblioteca-digital(biblioteca-digital.postman_environment.json) e também a coleção BibliotecaDigital(BibliotecaDigital.postman_collection.json), para a IDE Postman.
 
 
 Funcionalidade Categoria:

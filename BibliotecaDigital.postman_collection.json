@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "1fadab8b-25b3-4318-8e10-9d9e37e8bb25",
+		"name": "BibliotecaDigital",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9458961"
+	},
+	"item": [
+		{
+			"name": "Categoria",
+			"item": [
+				{
+					"name": "All categorias",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/categorias",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Livros da categoria",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/categorias/1/livros",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"categorias",
+								"1",
+								"livros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New categoria",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\" : \"Garden\",\r\n    \"descricao\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/categorias",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"categorias"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Autor",
+			"item": [
+				{
+					"name": "All autor paged",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/autores?page=0&linesPerPage=10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"autores"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "linesPerPage",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Autor by id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/autores/5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"autores",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New autor",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Seu Madruga\",\r\n    \"email\": \"madruga@gmail.com\",\r\n    \"dataNascimento\": \"1954-04-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/autores",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"autores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update autor",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Jorge Lucas\",\r\n    \"email\": \"jorge@gmail.com\",\r\n    \"dataNascimento\": \"1985-05-31\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/autores/4",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"autores",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete autor",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/autores/5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"autores",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Livro",
+			"item": [
+				{
+					"name": "Listar todos livros",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/livros",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"livros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todos livros parametros",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/livros?categoria=1&ano=2021&autor=2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"livros"
+							],
+							"query": [
+								{
+									"key": "categoria",
+									"value": "1"
+								},
+								{
+									"key": "ano",
+									"value": "2021"
+								},
+								{
+									"key": "autor",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar por titulo",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/livros/search?titulo=java",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"livros",
+								"search"
+							],
+							"query": [
+								{
+									"key": "titulo",
+									"value": "java"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Livro by id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/livros/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"livros",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Livro",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"titulo\": \"Informação  senior\",\r\n  \"isbn\": \"5552111114\",\r\n  \"anoPublicacao\": 2025,\r\n  \"preco\": 102.0,\r\n  \"autorDTO\": {\r\n    \"id\": 5,\r\n    \"nome\": \"Mateus\",\r\n    \"email\": \"mateus@gmail.com\",\r\n    \"dataNascimento\": \"1921-12-01\"\r\n  },\r\n  \"categoriaDTO\": {\r\n    \"id\": 4,\r\n    \"nome\" : \"Informática\",\r\n    \"descricao\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/livros",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"livros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Livro",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titulo\": \"Segurança da Informação e Tecnologia\",\r\n    \"isbn\": \"5552369875\",\r\n    \"anoPublicacao\": 2000,\r\n    \"preco\": 102.0,\r\n    \"autorDTO\": {\r\n        \"id\": 5,\r\n        \"nome\": \"Mateus\",\r\n        \"email\": \"mateus@gmail.com\",\r\n        \"dataNascimento\": \"1921-12-01\"\r\n    },\r\n    \"categoriaDTO\": {\r\n        \"id\": 4,\r\n        \"nome\": \"Informática e Tecnologia\",\r\n        \"descricao\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/livros/8",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"livros",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Livro",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/livros/8",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"livros",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Web Scraping",
+			"item": [
+				{
+					"name": "Livro Scraping Amazon",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"url\": \"https://www.amazon.com.br/dp/8535902775\",\r\n\"autorId\": 1,\r\n\"categoriaId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/livros/importar",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"livros",
+								"importar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
