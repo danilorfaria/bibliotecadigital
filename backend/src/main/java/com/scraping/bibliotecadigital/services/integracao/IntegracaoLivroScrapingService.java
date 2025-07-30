@@ -70,7 +70,6 @@ public class IntegracaoLivroScrapingService {
 				
 				linha = entrada.substring(entrada.indexOf("<span id=\"productTitle\" class=\"a-size-large celwidget\">"));
 				linha = linha.substring(linha.indexOf(">") + 1, linha.indexOf("</span>")).trim();
-				System.out.println(linha);
 				saida.put("titulo", linha);
 			}
 
@@ -79,7 +78,6 @@ public class IntegracaoLivroScrapingService {
 				linha = entrada.substring(entrada.indexOf("ISBN-10"));
 				linha = linha.substring(linha.indexOf("<div class=\"a-section a-spacing-none a-text-center rpi-attribute-value\"> <span>") + 1, linha.indexOf("</span> </div> </div>  </li>")).trim();
 				linha = linha.substring(linha.indexOf("<span>") + 6).trim();
-				System.out.println(linha);
 				saida.put("isbn", linha);
 			}
 			
@@ -88,7 +86,6 @@ public class IntegracaoLivroScrapingService {
 				linha = entrada.substring(entrada.indexOf("<span id=\"productSubtitle\" class=\"a-size-medium a-color-secondary celwidget\">"));
 				linha = linha.substring(linha.indexOf(">") + 1, linha.indexOf("</span>")).trim();
 				linha = linha.substring(linha.length() - 5, linha.length()).trim();
-				System.out.println(linha);
 				saida.put("anoPublicacao", linha);
 				
 			}
@@ -98,7 +95,6 @@ public class IntegracaoLivroScrapingService {
 				linha = entrada.substring(entrada.indexOf("class=\"a-price-whole\">"));
 				linha = linha.substring(linha.indexOf(">") + 1, linha.indexOf("</span>")).trim();
 				linha = linha.substring(0, linha.indexOf("<span class=\"a-price-decimal\">,")).trim();
-				System.out.println(linha);
 				saida.put("preco", linha);
 
 				if (entrada.contains("\"a-price-fraction\">")) {
@@ -106,7 +102,6 @@ public class IntegracaoLivroScrapingService {
 					linha = entrada.substring(entrada.indexOf("\"a-price-fraction\">")).trim();
 					linha = linha.substring(linha.indexOf("\"a-price-fraction\">"), linha.indexOf("</span></span></span>")).trim();
 					linha = linha.substring(linha.indexOf(">") + 1).trim();
-					System.out.println(linha);
 					saida.put("preco", saida.get("preco") + "." + linha);
 				}
 			}
